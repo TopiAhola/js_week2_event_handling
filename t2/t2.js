@@ -773,25 +773,74 @@ const restaurants = [
 // your code here
 
 //reset and show dialog
-function showDialog(event){
+function showDialog(event) {
   console.log(showDialog);
+
+  //get and reset dialog
   let dialog = document.querySelector('dialog');
-  dialog.innerHTML = '';
+  dialog.innerHTML = ``;
 
+  //add info
+  let paragraph = document.createElement('p');
   let index = Number(event.target.parentElement.getAttribute('listIndex'));
+  paragraph.innerHTML = '' + restaurants[index].name + '<br><br>'
+    + 'Address: <br>'
+    + restaurants[index].address + '<br>'
+    + restaurants[index].postalCode + ' ' + restaurants[index].city + '<br><br>'
+    + 'Phone: <br>'
+    + restaurants[index].phone + '<br><br>'
+    + 'Company: ' + restaurants[index].company + '<br>'
+  ;
+  dialog.appendChild(paragraph);
 
-  for (let key in restaurants[index]){
-    let paragraph = document.createElement('p');
-    paragraph.textContent = key+": "+restaurants[index][key];
-    dialog.appendChild(paragraph);
-  }
+  //add close button
+  let closeDialogButton = document.createElement('button');
+  closeDialogButton.addEventListener('click', closeDialog);
+  closeDialogButton.innerHTML = 'Close';
+  dialog.appendChild(closeDialogButton);
 
+  //get position of row, put dialog there
+  let targetRect = event.target.parentElement.getBoundingClientRect();
+   let targetPosition = targetRect.bottom;
+
+  //position of end of list
+  let listRect = event.target.parentElement.parentElement.getBoundingClientRect();
+  let listBottom = listRect.bottom;
+
+  //relative offset to move dialog upward
+  let offset = -(listBottom - targetPosition +1); //+i to cover margin gap in table
+  console.log("dialog offset:" + offset);
+  dialog.style.top = offset + 'px';
+  dialog.style.minWidth = targetRect.width + 'px';
   dialog.show();
 }
 
+/*vanha toimiva
+ let position = event.target.parentElement.getBoundingClientRect();
+  dialog.style.top = position.bottom  + 'px'
+  dialog.style.width = position.width + 'px'
+  dialog.show();
+
+ */
+
+
 //closes the dialog
 function closeDialog(){
+  console.log("closeDialog")
   document.querySelector('dialog').close();
+}
+
+//closes the dialog on scroll
+function autoCloseDialog(){
+  console.log("autoCloseDialog");
+  console.log(scrollCounter);
+  scrollCounter++;
+  if (scrollCounter >=  15) {
+    console.log("close dialog")
+    document.querySelector('dialog').close();
+    scrollCounter = 0;
+  }
+
 }
 
 //remove highlights and add one for target
@@ -831,4 +880,12 @@ for (let r of restaurants){
   restaurantElement.append(nameCell,addressCell);
   document.querySelector('table').append(restaurantElement);
 }
+
+/*
+
+//cloce dialog on scroll
+let scrollCounter = 0;
+window.addEventListener('scroll',autoCloseDialog);
+
+*/
 
