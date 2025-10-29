@@ -23,8 +23,8 @@ label {
 }
 
 li button {
-  width: 2rem;
-  height: 3rem;
+  /*width: 1rem;*/
+  /*height: 1rem;*/
   background-color: rgb(255, 0, 0);
   color: #fff;
   border: none;
