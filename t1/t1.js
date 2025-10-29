@@ -45,6 +45,11 @@ function showAddDialog(evt){
   document.querySelector('dialog').show();
 }
 
+//closes the dialog
+function closeDialogButtonFunction(event){
+  document.querySelector('dialog').close();
+}
+
 //add new item and update list
 function addButtonFunction(evt){
   console.log("addButtonFunction")
@@ -53,12 +58,16 @@ function addButtonFunction(evt){
 
   let newItemString = document.querySelector('#addTextField').value;
   console.log("Add item: " +newItemString);
-  todoList.push({
-    id: ++itemCounter,
-    task: newItemString,
-    completed: false,
-  });
-  console.log(todoList);
+  if(newItemString.length > 0) {
+    todoList.push({
+      id: ++itemCounter,
+      task: newItemString,
+      completed: false,
+    });
+    console.log(todoList);
+  } else {
+    console.log("Bad input")
+  }
   updateList();
 }
 
@@ -109,6 +118,9 @@ addTodoButton.addEventListener('click', showAddDialog);
 
 let dialogAddButton = document.querySelector('#dialogAddButton');
 dialogAddButton.addEventListener('click', addButtonFunction);
+
+let closeDialogButton  = document.querySelector('#closeDialogButton');
+closeDialogButton.addEventListener('click',closeDialogButtonFunction)
 
 //number
 let itemCounter = todoList.length;
