@@ -771,3 +771,64 @@ const restaurants = [
 ];
 
 // your code here
+
+//reset and show dialog
+function showDialog(event){
+  console.log(showDialog);
+  let dialog = document.querySelector('dialog');
+  dialog.innerHTML = '';
+
+  let index = Number(event.target.parentElement.getAttribute('listIndex'));
+
+  for (let key in restaurants[index]){
+    let paragraph = document.createElement('p');
+    paragraph.textContent = key+": "+restaurants[index][key];
+    dialog.appendChild(paragraph);
+  }
+
+  dialog.show();
+}
+
+//closes the dialog
+function closeDialog(){
+  document.querySelector('dialog').close();
+}
+
+//remove highlights and add one for target
+function toggleHighlight(event){
+  for(let elem of document.getElementsByClassName('highlight')){
+    elem.classList.remove('highlight');
+  }
+  //event.target.classList.add('highlight'); //highlights the cell
+  console.log(event.target+"highlighted");
+  event.target.parentElement.classList.add('highlight'); //highlits the row
+
+  showDialog(event);
+}
+
+//////////////////////////
+//main
+
+//Sort restaurants
+restaurants.sort(
+  (a,b)=>{
+    return a.name.localeCompare(b.name);
+  }
+)
+
+for (let r of restaurants){
+  let restaurantElement = document.createElement('tr');
+  restaurantElement.setAttribute('class', 'restaurant');
+  restaurantElement.setAttribute('listIndex', restaurants.indexOf(r).toString());
+  restaurantElement.addEventListener('click', toggleHighlight);
+
+  let nameCell = document.createElement('td');
+  nameCell.innerHTML = r.name;
+
+  let addressCell = document.createElement('td');
+  addressCell.innerHTML = r.address;
+
+  restaurantElement.append(nameCell,addressCell);
+  document.querySelector('table').append(restaurantElement);
+}
+
