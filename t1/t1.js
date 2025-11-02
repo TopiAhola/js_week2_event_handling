@@ -47,6 +47,7 @@ function showAddDialog(evt){
 
 //closes the dialog
 function closeDialogButtonFunction(event){
+  event.preventDefault();
   document.querySelector('dialog').close();
 }
 
